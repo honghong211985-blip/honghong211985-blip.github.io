@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>上传学生证</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, sans-serif;}
+body{background:#fff8f5;padding:40px 20px;max-width:420px;margin:0 auto;min-height:100vh;}
+.title{font-size:22px;font-weight:bold;text-align:center;margin-bottom:16px;}
+.desc{text-align:center;font-size:16px;color:#555;line-height:1.6;margin-bottom:40px;}
+.img-box{width:100%;height:200px;border:2px dashed #ff8899;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:40px;cursor:pointer;}
+.placeholder{text-align:center;color:#ff6677;}
+.plus{font-size:60px;display:block;}
+.preview-img{width:90%;border-radius:12px;display:none;}
+.submit-btn{width:100%;background:#ff4c60;color:white;border:none;border-radius:50px;padding:14px;font-size:18px;cursor:pointer;}
+.tip{text-align:center;margin-top:16px;font-size:13px;color:#777;}
+/*反诈弹窗*/
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:99;}
+.modal-box{background:#fff;width:85%;border-radius:12px;padding:24px;max-width:340px;}
+.modal-box h3{color:red;margin-bottom:12px;}
+.modal-buttons{margin-top:20px;text-align:right;}
+.modal-buttons button{background:#ff4c60;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="title">上传学生证</div>
+<div class="desc">
+请上传本人有效学生证照片<br>审核通过即可领取小猫
+</div>
+
+<div class="img-box" id="imgBox">
+  <div class="placeholder" id="place">
+    <span class="plus">+</span>
+    <span>点击选择图片</span>
+  </div>
+  <img class="preview-img" id="preview">
+  <input type="file" id="fileInput" accept="image/*" style="display:none;">
+</div>
+
+<button class="submit-btn" onclick="submit()">提交审核</button>
+<div class="tip">⚠️提示：照片需清晰可见姓名、学号</div>
+
+<!--反诈警告弹窗-->
+<div class="modal" id="warnModal">
+  <div class="modal-box">
+    <h3>【反诈演示警告】</h3>
+    <p>你上传的学生证个人信息会被骗子全部窃取！下一步骗子会以运费、检疫费、保证金为由持续向你收钱，不存在免费纯种猫！</p>
+    <div class="modal-buttons">
+      <button onclick="backHome()">了解风险</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const imgBox = document.getElementById("imgBox");
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+const place = document.getElementById("place");
+const warnModal = document.getElementById("warnModal");
+let selected = false;
+
+imgBox.onclick = ()=> fileInput.click();
+fileInput.onchange = function(e){
+  const file = e.target.files[0];
+  if(file){
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+    preview.style.display = "block";
+    place.style.display = "none";
+    selected = true;
+  }
+}
+
+function submit(){
+  if(!selected){
+    alert("请先上传学生证图片");
+    return;
+  }
+  warnModal.style.display = "flex";
+}
+function backHome(){
+  warnModal.style.display = "none";
+  window.location.href = "index.html";
+}
+</script>
+</body>
+</html>
